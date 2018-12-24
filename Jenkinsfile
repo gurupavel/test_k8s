@@ -15,7 +15,6 @@ node{
 }
     stage('Deploy on K8s'){
 sh "kubectl cluster-info"
-sh "ansible-playbook /var/lib/jenkins/ansible/sayarapp-deploy/deploy.yml  --user=jenkins --extra-vars ImageName=${ImageName} --extra-vars imageTag=${imageTag} --extra-vars Namespace=${Namespace}"
     }
      } catch (err) {
       currentBuild.result = 'FAILURE'
