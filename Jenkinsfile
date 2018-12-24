@@ -20,9 +20,9 @@ pipeline {
                   sh "docker push ${ImageName}"
                 }
             }
-        }
-    }
-  }
+          }
+    
+  
 }
 
 
