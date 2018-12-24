@@ -3,7 +3,7 @@ pipeline {
     environment {
          registry = "https://381850379063.dkr.ecr.us-east-1.amazonaws.com/"
          application = "client-equivvy-webapp-react"
-         registryCredential = 'dockerregistry'
+         registryCredential = 'ecr:us-east-1:zfort_aws'
          image_name = "381850379063.dkr.ecr.us-east-1.amazonaws.com/client-equivvy-webapp-react:${BUILD_NUMBER}"
     }
 
@@ -19,12 +19,33 @@ pipeline {
         branch 'master'
       }
       steps {
-        withDockerRegistry([ credentialsId: $(registryCredential), url: $(registry) ]) {
-          sh 'docker push ${image_name}'
-        }
+                script{
+
+                       docker.withRegistry(registry, registryCredential){  
+                               docker.image(image_name).push() 
+                               }
+                      }
+            }
       }
     }
   }
+
+post
+ 
+    {
+ 
+        always
+ 
+        {
+ 
+            // make sure that the Docker image is removed
+ 
+            sh "docker rmi $image_name | true"
+ 
+        }
+ 
+    }
+
 }
 
 
