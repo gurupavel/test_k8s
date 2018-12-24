@@ -1,6 +1,7 @@
 pipeline {
     environment {
-         registry = "https://381850379063.dkr.ecr.us-east-1.amazonaws.com"
+         registry = "https://381850379063.dkr.ecr.us-east-1.amazonaws.com/"
+         application = "client-equivvy-webapp-react"
          registryCredential = 'dockerregistry'
     }   
 
@@ -15,7 +16,7 @@ stages {
             {
                steps{
                   script {
-                  docker.build registry + ":$BUILD_NUMBER"
+                  docker.build registry +application + ":$BUILD_NUMBER"
                    }
       }
             }
