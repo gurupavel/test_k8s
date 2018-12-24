@@ -19,7 +19,7 @@ pipeline {
         branch 'master'
       }
       steps {
-        withDockerRegistry([ credentialsId: ${registryCredential}, url: ${registry} ]) {
+        withDockerRegistry([ credentialsId: $(registryCredential), url: $(registry) ]) {
           sh 'docker push ${image_name}'
         }
       }
