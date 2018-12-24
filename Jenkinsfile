@@ -14,7 +14,7 @@ node{
         }
 }
     stage('Deploy on K8s'){
-sh "kubectl cluster-info"
+        sh "kubectl --kubeconfig=kube_config apply -f equivvy_deployment_client_equivvy_webapp_react.yml"
     }
      } catch (err) {
       currentBuild.result = 'FAILURE'
