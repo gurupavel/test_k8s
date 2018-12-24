@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`icons test snapshot testing 1`] = `
+<div
+  className="footer-sticky pure-g"
+>
+  <Link
+    key="0"
+    replace={false}
+    to="/search/resa"
+  >
+    <div>
+      <Search
+        color="#697379"
+        size="27px"
+        viewBox=""
+      />
+    </div>
+    <div
+      style={
+        Object {
+          "color": "#697379",
+        }
+      }
+    >
+      Köp resor
+    </div>
+  </Link>
+  <Link
+    key="1"
+    replace={false}
+    to="/mina-resor"
+  >
+    <div>
+      <BriefCase
+        color="#697379"
+        size="28px"
+        viewBox="0 0 23 23"
+      />
+    </div>
+    <div
+      style={
+        Object {
+          "color": "#697379",
+        }
+      }
+    >
+      Mina resor
+    </div>
+  </Link>
+  <Link
+    key="2"
+    replace={false}
+    to="/mitt-konto"
+  >
+    <div>
+      <DefaultAvatar
+        color="#697379"
+        size="22px"
+        viewBox=""
+      />
+    </div>
+    <div
+      style={
+        Object {
+          "color": "#697379",
+        }
+      }
+    >
+      Mitt konto
+    </div>
+  </Link>
+</div>
+`;
