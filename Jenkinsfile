@@ -4,8 +4,8 @@ node{
   def Creds = "ecr:us-east-1:zfort_aws"
   try{
   stage('Checkout'){
-      sh "git rev-parse --short HEAD > .git/commit-id"
-      imageTag= readFile('.git/commit-id').trim()
+      sh "git rev-parse --short HEAD > commit-id"
+      imageTag= readFile('commit-id').trim()
 }
   stage('Docker Build, Push'){
     withDockerRegistry([credentialsId: "${Creds}", url: 'https://381850379063.dkr.ecr.us-east-1.amazonaws.com/']) {
