@@ -4,14 +4,14 @@ pipeline {
          registry = "https://381850379063.dkr.ecr.us-east-1.amazonaws.com/"
          application = "client-equivvy-webapp-react"
          registryCredential = 'ecr:us-east-1:zfort_aws'
-         image_name = "381850379063.dkr.ecr.us-east-1.amazonaws.com/client-equivvy-webapp-react:${GIT_REVISION[0..7]}"
+         image_name = "381850379063.dkr.ecr.us-east-1.amazonaws.com/client-equivvy-webapp-react"
     }
 
   agent any
   stages {
     stage('Build') {
       steps {
-        sh 'docker build -t ${image_name} .'
+        sh 'docker build -t ${image_name}:${GIT_REVISION[0..7]} .'
       }
     }
     stage('Publish') {
