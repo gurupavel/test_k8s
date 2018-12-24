@@ -1,59 +1,26 @@
-pipeline {
-
-    environment {
-         registry = "https://381850379063.dkr.ecr.us-east-1.amazonaws.com/"
-         application = "client-equivvy-webapp-react"
-         registryCredential = 'ecr:us-east-1:zfort_aws'
-         image_name = "381850379063.dkr.ecr.us-east-1.amazonaws.com/client-equivvy-webapp-react"
-    }
-
-  agent any
-  stages {
-    stage('Build') {
-      steps {
-       sh 'docker build -t ${image_name} .'
-      }
-    }
-    stage('Publish') {
-      when {
-        branch 'master'
-      }
-      steps {
-              script{
-                  docker.withRegistry(registry, registryCredential){  
-                  docker.image(image_name).push('${GIT_COMMIT}') 
-                         }
-                    }
-            }
-      }
-
-
-    stage('List pods') {
-    withKubeConfig([credentialsId: 'zfort_k8s',
-                    serverUrl: 'https://api-zfort-k8s-local-vji2st-1869253548.us-east-1.elb.amazonaws.com',
-                    ]) {
-      sh 'kubectl get pods'
-    }
-  }
-
-    }
-  
-
-post
- 
-    {
- 
-        always
- 
-        {
- 
-            // make sure that the Docker image is removed
- 
-            sh "docker rmi $image_name | true"
- 
-        }
- 
-    }
-
+node{
+  def Namespace = "test-equivvy"
+  def ImageName = "381850379063.dkr.ecr.us-east-1.amazonaws.com/client-equivvy-webapp-react"
+  def Creds = "ecr:us-east-1:zfort_aws"
+  try{
+  stage('Checkout'){
+      sh "git rev-parse --short HEAD > .git/commit-id"
+      imageTag= readFile('.git/commit-id').trim()
 }
-
+  stage('RUN Unit Tests'){
+      sh "npm install"
+      sh "npm test"
+  }
+  stage('Docker Build, Push'){
+    withDockerRegistry([credentialsId: "${Creds}", url: 'https://381850379063.dkr.ecr.us-east-1.amazonaws.com/']) {
+      sh "docker build -t ${ImageName}:${imageTag} ."
+      sh "docker push ${ImageName}"
+        }
+}
+    stage('Deploy on K8s'){
+sh "ansible-playbook /var/lib/jenkins/ansible/sayarapp-deploy/deploy.yml  --user=jenkins --extra-vars ImageName=${ImageName} --extra-vars imageTag=${imageTag} --extra-vars Namespace=${Namespace}"
+    }
+     } catch (err) {
+      currentBuild.result = 'FAILURE'
+    }
+}
