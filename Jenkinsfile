@@ -11,7 +11,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'docker build -t ${image_name}:${GIT_REVISION[0..7]} .'
+        sh 'docker build -t ${image_name}:${GIT_REVISION} .'
       }
     }
     stage('Publish') {
@@ -31,6 +31,7 @@ pipeline {
               script {
 
                      withKubeConfig([credentialsId: 'zfort_k8s', serverUrl: 'https://api-zfort-k8s-local-vji2st-1869253548.us-east-1.elb.amazonaws.com']){
+                         
                          sh 'kubectl apply -f equivvy_deployment_client_equivvy_webapp_react.yml'
                          }
         
