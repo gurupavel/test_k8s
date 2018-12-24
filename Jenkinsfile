@@ -16,7 +16,7 @@ pipeline {
             {
               withDockerRegistry([credentialsId: "${registryCredential}", url: 'https://381850379063.dkr.ecr.us-east-1.amazonaws.com/']) 
                 {
-                  sh "docker build -t ${ImageName}:${GIT_REVISION,length=6} ."
+                  sh "docker build -t ${ImageName}:$BUILD_NUMBER ."
                   sh "docker push ${ImageName}"
                 }
             }
