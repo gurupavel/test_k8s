@@ -3,7 +3,7 @@ pipeline {
          registry = "https://381850379063.dkr.ecr.us-east-1.amazonaws.com/"
          application = "client-equivvy-webapp-react"
          registryCredential = 'dockerregistry'
-         image_name = registry + application+':$(BUILD_NUMBER)'
+         image_name = registry + application + ':$(BUILD_NUMBER)'
     }   
 
 agent {
@@ -17,7 +17,7 @@ stages {
             {
                steps{ 
                   withDockerRegistry([credentialsId: "${registryCredential}", url: $(registry)]) {
-                  sh "docker build -t $(image_name)"
+                  sh "docker build -t ${image_name}"
                   sh "docker push ${image_name}"
                                                 } 
                    }
