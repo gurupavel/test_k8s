@@ -11,7 +11,8 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'docker build -t ${image_name}:${GIT_REVISION} .'
+       GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true) 
+       sh 'docker build -t ${image_name}:${GIT_COMMIT_HASH} .'
       }
     }
     stage('Publish') {
@@ -21,7 +22,7 @@ pipeline {
       steps {
               script{
                   docker.withRegistry(registry, registryCredential){  
-                  docker.image(image_name).push() 
+                  docker.image(image_name).push('$GIT_COMMIT_HASH') 
                          }
                     }
             }
