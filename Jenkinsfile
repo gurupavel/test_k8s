@@ -7,7 +7,7 @@ pipeline {
          image_name = "https://381850379063.dkr.ecr.us-east-1.amazonaws.com/client-equivvy-webapp-react" + ':$(BUILD_NUMBER)'
     }
 
-  agent { label 'docker' }
+  agent any
   stages {
     stage('Build') {
       steps {
