@@ -3,7 +3,7 @@ pipeline {
          registry = "https://381850379063.dkr.ecr.us-east-1.amazonaws.com/"
          application = "client-equivvy-webapp-react"
          registryCredential = 'dockerregistry'
-         image_name = registry + application + ':$(BUILD_NUMBER)'
+         image_name = "https://381850379063.dkr.ecr.us-east-1.amazonaws.com/client-equivvy-webapp-react" + ':$(BUILD_NUMBER)'
     }   
 
 agent {
