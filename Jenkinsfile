@@ -10,9 +10,7 @@ pipeline {
             args '-p 3000:3000' 
         }
     }
-    stages {
-
-        stage('Docker Build, Push')
+    stage('Docker Build, Push')
             {
               withDockerRegistry([credentialsId: "${registryCredential}", url: 'https://381850379063.dkr.ecr.us-east-1.amazonaws.com/']) 
                 {
@@ -20,7 +18,6 @@ pipeline {
                   sh "docker push ${ImageName}"
                 }
             }
-          }
     
   
 }
