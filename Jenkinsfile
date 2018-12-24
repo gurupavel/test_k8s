@@ -10,16 +10,17 @@ pipeline {
             args '-p 3000:3000' 
         }
     }
+stages {
     stage('Docker Build, Push')
             {
-              withDockerRegistry([credentialsId: "${registryCredential}", url: 'https://381850379063.dkr.ecr.us-east-1.amazonaws.com/']) 
-                {
-                  sh "docker build -t ${ImageName}:$BUILD_NUMBER ."
-                  sh "docker push ${ImageName}"
-                }
+               steps{
+                  script {
+                  docker.build registry + ":$BUILD_NUMBER"
+                   }
+      }
             }
     
-  
+       }
 }
 
 
