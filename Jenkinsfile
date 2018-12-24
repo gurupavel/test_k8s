@@ -12,10 +12,6 @@ pipeline {
     }
     stages {
 
-   #     stage('Testing') { 
-   #         steps {
-   #             sh 'npm install' 
-   #         }
         stage('Docker Build, Push')
             {
               withDockerRegistry([credentialsId: "${registryCredential}", url: 'https://381850379063.dkr.ecr.us-east-1.amazonaws.com/']) 
