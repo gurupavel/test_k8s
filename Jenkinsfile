@@ -21,7 +21,7 @@ pipeline {
     }
     stage('Deploy on kubernetes') {
       steps {
-        kubernetesDeploy(kubeconfigId: 'zfort_k8s', configs: 'equivvy_deployment_client_equivvy_webapp_react.yml', credentialsType: 'file', secretName: 'k8s_conf')
+        kubernetesDeploy(kubeconfigId: 'zfort', configs: 'equivvy_deployment_client_equivvy_webapp_react.yml')
       }
     }
   }
