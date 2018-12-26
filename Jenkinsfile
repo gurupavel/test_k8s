@@ -26,11 +26,6 @@ pipeline {
             }
       }
 
-        stage('Fetching kubernetes config files') {
-            steps {
-                git 'git_url_of_k8s_configurations'
-            }
-        }
         stage('Deploy on kubernetes') {
             steps {
                 kubernetesDeploy(
