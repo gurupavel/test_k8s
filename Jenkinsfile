@@ -1,20 +1,44 @@
-node{
-  def Namespace = "test-equivvy"
-  def ImageName = "381850379063.dkr.ecr.us-east-1.amazonaws.com/client-equivvy-webapp-react"
-  def Creds = "ecr:us-east-1:zfort_aws"
-  try{
+pipeline {
+    environment {
+        registry = "https://381850379063.dkr.ecr.us-east-1.amazonaws.com/"
+        application = "client-equivvy-webapp-react"
+        registryCredential = 'ecr:us-east-1:zfort_aws'
+        image_name = "381850379063.dkr.ecr.us-east-1.amazonaws.com/client-equivvy-webapp-react"
 
-  stage('Docker Build, Push'){
-    withDockerRegistry([credentialsId: "${Creds}", url: 'https://381850379063.dkr.ecr.us-east-1.amazonaws.com/']) {
-      sh "docker build -t ${ImageName}:77777 ."
-      sh "docker push ${ImageName}:77777"
-        }
-}
-    stage('Deploy on K8s'){
-        sh "ls -lash"
-        sh "kubectl --kubeconfig=k8sconfig apply -f equivvy_deployment_client_equivvy_webapp_react.yml"
     }
-     } catch (err) {
-      currentBuild.result = 'FAILURE'
+    agent any
+    stages {
+        stage('Build') {
+          steps {
+               sh 'docker build -t ${image_name} .'
+               }
+                       }
+    stage('Publish') {
+      when {
+        branch 'master'
+      }
+      steps {
+              script{
+                  docker.withRegistry(registry, registryCredential){  
+                  docker.image(image_name).push('${GIT_COMMIT}') 
+                         }
+                    }
+            }
+      }
+
+        stage('Fetching kubernetes config files') {
+            steps {
+                git 'git_url_of_k8s_configurations'
+            }
+        }
+        stage('Deploy on kubernetes') {
+            steps {
+                kubernetesDeploy(
+                    kubeconfigId: 'zfort_k8s',
+                    configs: 'equivvy_deployment_client_equivvy_webapp_react.yml',
+                    enableConfigSubstitution: true
+                )
+            }
+        }
     }
 }
