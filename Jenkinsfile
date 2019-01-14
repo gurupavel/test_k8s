@@ -37,4 +37,18 @@ stage('Build') {
     registryCredential = 'ecr:us-east-1:zfort_aws'
     image_name = '381850379063.dkr.ecr.us-east-1.amazonaws.com/client-equivvy-webapp-react'
   }
+   post
+  {
+        success {
+
+        slackSend channel: '#web',
+                  color: 'good',
+                  message: "The pipeline ${currentBuild.fullDisplayName} Success"
+        }
+        failure {
+            slackSend channel: '#web',
+                  color: 'good',
+                  message: "The pipeline ${currentBuild.fullDisplayName} FAILED"
+        }
+    }
 }
