@@ -7,6 +7,7 @@ stage('Build') {
   steps{
     labelledShell label: 'DOCKER BUILDS', script: 'docker build -t ${image_name} .'
     }
+}
     stage('Publish') {
       when {
         branch 'master'
