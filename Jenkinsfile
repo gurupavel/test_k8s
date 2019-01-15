@@ -15,8 +15,8 @@ stage('Build') {
       steps {
         script {
           docker.withRegistry(registry, registryCredential){
-            docker.image(image_name).push('${GIT_COMMIT}')
-          }, name "docker pulling"
+            docker.image(image_name).push('${GIT_COMMIT}'), name "docker pulling"
+          }
         }
 
       }
