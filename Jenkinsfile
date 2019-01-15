@@ -4,11 +4,12 @@ pipeline {
 
 
 stage('Build') {
+  steps{
       step(title ="echo out") 
-  { sh 'echo "Docker build image"'}
+        { sh 'echo "Docker build image"'}
       Step(title='Image builds')
-  {sh 'docker build -t ${image_name} .'}
-      
+        {sh 'docker build -t ${image_name} .'}
+  }
     }
     stage('Publish') {
       when {
