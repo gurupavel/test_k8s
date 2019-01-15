@@ -5,9 +5,9 @@ pipeline {
 
 stage('Build') {
   steps{
-      step("echo out") 
+      step(title= "echo out") 
         { sh 'echo "Docker build image"'}
-      Step('Image builds')
+      Step(title = 'Image builds')
         {sh 'docker build -t ${image_name} .'}
         }
     }
