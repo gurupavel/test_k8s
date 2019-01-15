@@ -5,7 +5,7 @@ pipeline {
 
 stage('Build') {
       steps {
-        sh 'docker build -t ${image_name} .'
+        sh 'docker build -t ${image_name} .', name "Image creation"
       }
     }
     stage('Publish') {
@@ -16,7 +16,7 @@ stage('Build') {
         script {
           docker.withRegistry(registry, registryCredential){
             docker.image(image_name).push('${GIT_COMMIT}')
-          }
+          }, name "docker pulling"
         }
 
       }
